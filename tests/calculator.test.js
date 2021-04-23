@@ -15,6 +15,8 @@ describe("evaluateExpression tests", () => {
 	testEvaluateExpression("4-(4+8(4)*(7-4))", -96);
 	testEvaluateExpression("4--(4+8(4)*(7-4))", 104);
 	testEvaluateExpression("4+-(4+8(4)*(7-4))", -96);
+	testEvaluateExpression("(8)(8)", 64);
+	testEvaluateExpression("(8)(8(4))", 32*8);
 });
 
 describe("input validation", () => {
