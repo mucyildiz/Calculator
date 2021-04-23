@@ -124,6 +124,11 @@ const fixSingleElementsInParentheses = (tokenArray) => {
 				}
 			}
 		}
+		// case like (8)(8) should evaluate to (8*8)
+		else if(tokenArray[i] === ')' && tokenArray[i+1] === '('){
+			tokenArray[i] = '*';
+			tokenArray.splice(i+1, 1);
+		}
 	}
 	return tokenArray;
 }
