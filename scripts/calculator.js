@@ -118,7 +118,7 @@ const fixSingleElementsInParentheses = (tokenArray) => {
  */
 const convertToPostfix = (input) => {
 	const precedence = operator => ['(', '+', '-', '*', '/'].indexOf(operator);
-	const tokenArray = getArrayOfElements(input);
+	const tokenArray = fixSingleElementsInParentheses(getArrayOfElements(input));
 	const postfixArray = [];
 	const operatorStack = [];
 
@@ -152,4 +152,4 @@ const convertToPostfix = (input) => {
 	return postfixArray;
 }
 
-module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix }
+module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixSingleElementsInParentheses }

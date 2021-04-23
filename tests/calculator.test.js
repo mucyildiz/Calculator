@@ -1,4 +1,4 @@
-const { evaluateExpression, getArrayOfElements, convertToPostfix } = require('../scripts/calculator.js')
+const { evaluateExpression, getArrayOfElements, convertToPostfix, fixSingleElementsInParentheses } = require('../scripts/calculator.js')
 
 describe("arithmetic tests", () => {
 	test("1 + 2 = 3", () => {
@@ -69,6 +69,16 @@ describe("convertToPostfix", () => {
 
 	test("4 - (8-9)", () => {
 		expect(convertToPostfix("4 - (8-9)")).toStrictEqual(['4','8','9','-','-']);
+	})
+
+	test("4(6)2 evaluates to 4*6*2", () => {
+		const tokenArray = getArrayOfElements("4(6)(2)");
+		expect(fixSingleElementsInParentheses(tokenArray)).toStrictEqual['4','*', '6', '*', '2'];
+	})
+
+	test("5+4(3) evaluates to 5 + 4 * 3", () => {
+		const tokenArray = getArrayOfElements("5+4(3)");
+		expect(fixSingleElementsInParentheses(tokenArray)).toStrictEqual['5','+', '4', '*', '3'];
 	})
 
 })
