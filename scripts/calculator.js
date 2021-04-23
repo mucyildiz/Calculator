@@ -12,9 +12,6 @@ const evaluateExpression = (input) => {
 		'/': (x, y) => Number(y) / Number(x)
 	};
 	const postfixArray = convertToPostfix(input);
-	if(input === "(8)(8(4))"){
-		console.log(postfixArray)
-	}
 	const postfixStack = [];
 	for(let token of postfixArray){
 		if(isOperator(token)){
