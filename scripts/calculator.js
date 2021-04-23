@@ -12,7 +12,9 @@ const evaluateExpression = (input) => {
 		'/': (x, y) => Number(y) / Number(x)
 	};
 	const postfixArray = convertToPostfix(input);
-	console.log(postfixArray)
+	if(input === "(8)(8(4))"){
+		console.log(postfixArray)
+	}
 	const postfixStack = [];
 	for(let token of postfixArray){
 		if(isOperator(token)){
@@ -25,7 +27,8 @@ const evaluateExpression = (input) => {
 			postfixStack.push(token);
 		}
 	}
-	const solution = postfixStack[0];
+	// add Number wrapper because if expression has no operators, will return a string
+	const solution = Number(postfixStack[0]);
 	if(postfixStack.length !== 1 || isNaN(solution)){
 		throw new Error("Invalid Input");
 	}
@@ -106,6 +109,14 @@ const validateInput = (input) => {
 const fixSingleElementsInParentheses = (tokenArray) => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
 		if(tokenArray[i-1] === '(' && tokenArray[i+1] === ')') {
+			// case like x((y)) should evaluate to x(y) then to x*y, first we need to remove all unnecessary parentheses
+			while(tokenArray[i-2] === '(' && tokenArray[i+2] === ')'){
+				// [(, (,  y, ), ),] => [(, y, ), )] => [(, y, )]
+				tokenArray.splice(i-2, 1);
+				//decrement i because the element we are considering had an element before it deleted, changing the indices of everything after
+			  i--;
+				tokenArray.splice(i+2, 1);
+			}
 			// case of x(y)z -> x*y*z
 			if(!isNaN(tokenArray[i-2]) && !isNaN(tokenArray[i+2])) {
 				tokenArray[i-1] = '*';
@@ -119,15 +130,28 @@ const fixSingleElementsInParentheses = (tokenArray) => {
 			// (x)y
 			else if(!isNaN(tokenArray[i+2])) {
 				tokenArray[i+1] = '*';
-				if(tokenArray[i-1] === '('){
-					tokenArray.splice(i-1, 1);
-				}
+				tokenArray.splice(i-1, 1);
+				i--;
+			}
+			else{
+				tokenArray.splice(i-1, 1);
+				i--;
+				tokenArray.splice(i+1, 1);
 			}
 		}
-		// case like (8)(8) should evaluate to (8*8)
+		// case like (8)(8) should evaluate to (8*8) 
 		else if(tokenArray[i] === ')' && tokenArray[i+1] === '('){
 			tokenArray[i] = '*';
 			tokenArray.splice(i+1, 1);
+		}
+		// case x(y-z) should evaluate to x*(y-z)
+		else if(tokenArray[i] === '(' && !isNaN(tokenArray[i-1])){
+			tokenArray.splice(i, 0, '*')
+			i++;
+		}
+		// case (y-z)x should evaluate to (y-z)*x
+		else if(tokenArray[i] === ')' && !isNaN(tokenArray[i+1])){
+			tokenArray.splice(i+1, 0, '*');
 		}
 	}
 	return tokenArray;
@@ -185,7 +209,6 @@ const convertToPostfix = (input) => {
 	};
 
 	const tokenArray = fixNegativeNumbers(fixSingleElementsInParentheses(getArrayOfElements(input)));
-
 	const postfixArray = [];
 	const operatorStack = [];
 

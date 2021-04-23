@@ -17,6 +17,13 @@ describe("evaluateExpression tests", () => {
 	testEvaluateExpression("4+-(4+8(4)*(7-4))", -96);
 	testEvaluateExpression("(8)(8)", 64);
 	testEvaluateExpression("(8)(8(4))", 32*8);
+	testEvaluateExpression("8*(8*4)", 32*8);
+	testEvaluateExpression("3 - - (5(6))", 33);
+	testEvaluateExpression("3((4))", 12);
+	testEvaluateExpression("(((4)))", 4);
+	testEvaluateExpression("(3-4)2", -2);
+	testEvaluateExpression("3*(4+(6)/2((10)-8))", 30);
+	testEvaluateExpression("2((10)-8)", 4);
 });
 
 describe("input validation", () => {
@@ -57,11 +64,12 @@ describe("fixing tests", () => {
 	//input should be the string representation of the equation, gets converted to array to be evaluated
 	const testFixSingleElementsInParentheses = (testInputStr, expectedOutputArray) => {
 		const tokenArray = getArrayOfElements(testInputStr);
-		expect(fixSingleElementsInParentheses(tokenArray)).toStrictEqual(expectedOutputArray)
+		expect(fixSingleElementsInParentheses(tokenArray)).toStrictEqual(expectedOutputArray);
 	}
 
 	testFixSingleElementsInParentheses("4(6)2", ['4','*', '6', '*', '2']);
 	testFixSingleElementsInParentheses("5+4(3)", ['5','+', '4', '*', '3'])
+	testFixSingleElementsInParentheses("2((10)-8)", ['2', '*', '(', '10', '-', '8', ')']);
 
 	const testFixNegativeNumbers = (testInputArray, expectedOutputArray) => {
 		test(`[${testInputArray}] evaluates to [${expectedOutputArray}]`, () => {
