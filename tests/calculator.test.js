@@ -11,6 +11,10 @@ describe("evaluateExpression tests", () => {
 	testEvaluateExpression("-5+-8--11*2", 9);
 	testEvaluateExpression("-.32       /.5", -0.64);
 	testEvaluateExpression("(4-2)*3.5", 7);
+	testEvaluateExpression("4*(3)", 12);
+	testEvaluateExpression("4-(4+8(4)*(7-4))", -96);
+	testEvaluateExpression("4--(4+8(4)*(7-4))", 104);
+	testEvaluateExpression("4+-(4+8(4)*(7-4))", -96);
 });
 
 describe("input validation", () => {
@@ -62,6 +66,6 @@ describe("fixing tests", () => {
 			expect(fixNegativeNumbers(testInputArray)).toStrictEqual(expectedOutputArray);
 		})
 	}
-	testFixNegativeNumbers(['5', '-', '-', '4'], ['5', '-', '-4']);
+	testFixNegativeNumbers(['5', '-', '-', '4'], ['5', '+', '4']);
 	testFixNegativeNumbers(['5', '-', '4'], ['5', '+', '-4']);
 })

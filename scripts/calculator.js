@@ -12,6 +12,7 @@ const evaluateExpression = (input) => {
 		'/': (x, y) => Number(y) / Number(x)
 	};
 	const postfixArray = convertToPostfix(input);
+	console.log(postfixArray)
 	const postfixStack = [];
 	for(let token of postfixArray){
 		if(isOperator(token)){
@@ -129,12 +130,26 @@ const fixSingleElementsInParentheses = (tokenArray) => {
 
 /**
  * @param {array} tokenArray 
- * @definition takes in array and makes interactions with negative numbers easier to deal with for postfix algorithm
+ * @definition takes in array (in infix notation) and makes interactions with negative numbers easier to deal with for postfix algorithm
  * @returns {array} tokenArray where every negative number is in one index e.g. [-4] instead of [-, 4]
  */
 const fixNegativeNumbers = (tokenArray) => {
 	for(let i = 0; i < tokenArray.length; i++) {
-		if(tokenArray[i] === '-' && !isNaN(tokenArray[i+1])) {
+		// if we have two negatives next to each other we simply treat it as addition and get rid of one of the negatives
+		if(tokenArray[i] === '-' && tokenArray[i+1] === '-'){
+			tokenArray[i] = '+';
+			tokenArray.splice(i+1, 1);
+		}
+		// case like x + -(y + z) -> x + -1*(y+z)
+		else if(tokenArray[i] === '-' && isNaN(tokenArray[i+1])) {
+			tokenArray[i] = '-1';
+			tokenArray.splice(i+1, 0, '*')
+			// if we had x - (y + z), we would go x -1*(y+z) so we need to add a + to get x + -1*(y+z)
+			if(!isNaN(tokenArray[i-1])) {
+				tokenArray.splice(i, 0, '+')
+			}
+		}
+		else if(tokenArray[i] === '-' && !isNaN(tokenArray[i+1])) {
 			// we make it a string to keep our types consistent in the tokenArray
 			tokenArray[i+1] = String(-1 * tokenArray[i+1]);
 			tokenArray.splice(i, 1);
