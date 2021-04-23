@@ -53,3 +53,22 @@ describe("getArrayOfElements", () => {
 		expect(getArrayOfElements("(35*7+3.512412)  + 4*72")).toStrictEqual(['(', '35', '*', '7', '+', '3.512412', ')', '+', '4', '*', '72']);
 	});
 });
+
+desribe("convertToPostfix", () => {
+	test("4+5 gives ['4', '5', '+']", () => {
+		expect(convertToPostfix("4+5")).toStrictEqual(['4', '5', '+']);
+	});
+
+	test("3.145 + 4 * 8", () => {
+		expect(convertToPostfix("3.1415+4*8")).toStrictEqual(['3.1415', '4', '8', '*', '+']);
+	});
+
+	test("4(8)", () => {
+		expect(convertToPostfix("4(8)")).toStrictEqual(['4','8','*']);
+	});
+
+	test("4 - (8-9)", () => {
+		expect(convertToPostfix("4 - (8-9)")).toStrictEqual(['4','8','9','-','-']);
+	})
+
+})
