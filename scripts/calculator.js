@@ -7,9 +7,9 @@ const evaluateExpression = (input) => {
 	validateInput(input);
 	const operate = {
 		'+': (x, y) => Number(x) + Number(y), 
-		'-': (x, y) => Number(x) - Number(y), 
+		'-': (x, y) => Number(y) - Number(x), 
 		'*': (x, y) => Number(x) * Number(y),
-		'/': (x, y) => Number(x) / Number(y)
+		'/': (x, y) => Number(y) / Number(x)
 	};
 	const postfixArray = convertToPostfix(input);
 	const postfixStack = [];
@@ -24,10 +24,10 @@ const evaluateExpression = (input) => {
 			postfixStack.push(token);
 		}
 	}
-	if(postfixStack.length !== 1 || isOperator(postfixStack[0])){
+	const solution = postfixStack[0];
+	if(postfixStack.length !== 1 || isNaN(solution)){
 		throw new Error("Invalid Input");
 	}
-	const solution = postfixStack[0];
 	return solution;
 }
 
@@ -135,7 +135,8 @@ const fixSingleElementsInParentheses = (tokenArray) => {
 const fixNegativeNumbers = (tokenArray) => {
 	for(let i = 0; i < tokenArray.length; i++) {
 		if(tokenArray[i] === '-' && !isNaN(tokenArray[i+1])) {
-			tokenArray[i+1] = -1 * tokenArray[i+1];
+			// we make it a string to keep our types consistent in the tokenArray
+			tokenArray[i+1] = String(-1 * tokenArray[i+1]);
 			tokenArray.splice(i, 1);
 			// for case where we have x-y, we translate to x+(-y)
 			if(i > 0) {
@@ -155,8 +156,16 @@ const fixNegativeNumbers = (tokenArray) => {
  * @returns {array} array of elements of input in postfix notation
  */
 const convertToPostfix = (input) => {
-	const precedence = operator => ['(', '+', '-', '*', '/'].indexOf(operator);
-	const tokenArray = fixSingleElementsInParentheses(getArrayOfElements(input));
+	const precedence = {
+		'(': 1,
+		'+': 2,
+		'-': 2,
+		'*': 3,
+		'/': 3
+	};
+
+	const tokenArray = fixNegativeNumbers(fixSingleElementsInParentheses(getArrayOfElements(input)));
+
 	const postfixArray = [];
 	const operatorStack = [];
 
@@ -177,7 +186,7 @@ const convertToPostfix = (input) => {
 		}
 		else{
 			//higher precedence operators get evaluated first so before we push an operator onto postfix, we check for higher precedence operators already in stack and push them first
-			while(operatorStack.length !== 0 && precedence(operatorStack[operatorStack.length - 1]) > precedence(token)) {
+			while(operatorStack.length !== 0 && precedence[operatorStack[operatorStack.length - 1]] >= precedence[token]) {
 				postfixArray.push(operatorStack.pop());
 			}
 			operatorStack.push(token);

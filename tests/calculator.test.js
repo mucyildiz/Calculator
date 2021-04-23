@@ -67,8 +67,8 @@ describe("convertToPostfix", () => {
 		expect(convertToPostfix("4(8)")).toStrictEqual(['4','8','*']);
 	});
 
-	test("4 - (8-9)", () => {
-		expect(convertToPostfix("4 - (8-9)")).toStrictEqual(['4','8','9','-','-']);
+	test("4*5/2", () => {
+		expect(convertToPostfix("4*5/2")).toStrictEqual(['4', '5', '*', '2', '/']);
 	})
 
 	test("4(6)2 evaluates to 4*6*2", () => {
@@ -83,12 +83,12 @@ describe("convertToPostfix", () => {
 
 	test("[5, -, -, 4] evaluates to [5, +, -4]", () => {
 		const tokenArray = ['5', '-', '-', '4'];
-		expect(fixNegativeNumbers(tokenArray)).toStrictEqual(['5', '-', -4])
+		expect(fixNegativeNumbers(tokenArray)).toStrictEqual(['5', '-', '-4'])
 	})
 
 	test("[5, -, 4] evaluates to [5, +, -4]", () => {
 		const tokenArray = ['5', '-', '4'];
-		expect(fixNegativeNumbers(tokenArray)).toStrictEqual(['5', '+', -4])
+		expect(fixNegativeNumbers(tokenArray)).toStrictEqual(['5', '+', '-4'])
 	})
 
 })
