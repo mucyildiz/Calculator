@@ -1,4 +1,4 @@
-const { evaluateExpression, getArrayOfElements } = require('../scripts/calculator.js')
+const { evaluateExpression, getArrayOfElements, convertToPostfix } = require('../scripts/calculator.js')
 
 describe("arithmetic tests", () => {
 	test("1 + 2 = 3", () => {
@@ -54,7 +54,7 @@ describe("getArrayOfElements", () => {
 	});
 });
 
-desribe("convertToPostfix", () => {
+describe("convertToPostfix", () => {
 	test("4+5 gives ['4', '5', '+']", () => {
 		expect(convertToPostfix("4+5")).toStrictEqual(['4', '5', '+']);
 	});
