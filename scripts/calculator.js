@@ -11,8 +11,24 @@ const evaluateExpression = (input) => {
 		'*': (x, y) => Number(x) * Number(y),
 		'/': (x, y) => Number(x) / Number(y)
 	};
-
-	
+	const postfixArray = convertToPostfix(input);
+	const postfixStack = [];
+	for(let token of postfixArray){
+		if(isOperator(token)){
+			const operation = operate[token];
+			const elementOne = postfixStack.pop();
+			const elementTwo = postfixStack.pop();
+			postfixStack.push(operation(elementOne, elementTwo));
+		}
+		else{
+			postfixStack.push(token);
+		}
+	}
+	if(postfixStack.length !== 1 || isOperator(postfixStack[0])){
+		throw new Error("Invalid Input");
+	}
+	const solution = postfixStack[0];
+	return solution;
 }
 
 const isOperator = element => '*/-+()'.includes(element);
@@ -24,7 +40,6 @@ const isOperator = element => '*/-+()'.includes(element);
  * @returns {Array} 
  */
 const getArrayOfElements = (input) => {
-	validateInput(input);
 	const inputWithoutSpaces = input.replace(/\s+/g, '');
 	const inputArray = inputWithoutSpaces.split('');
 	const tokenArray = [];
@@ -85,6 +100,7 @@ const validateInput = (input) => {
 /**
  * @param {array} tokenArray
  * @description looks for expressions in the form of x(y) and converts to x*y
+ * @returns {array} array of tokens where all single element parentheses are converted to multiplication problems
  */
 const fixSingleElementsInParentheses = (tokenArray) => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
@@ -112,9 +128,31 @@ const fixSingleElementsInParentheses = (tokenArray) => {
 }
 
 /**
+ * @param {array} tokenArray 
+ * @definition takes in array and makes interactions with negative numbers easier to deal with for postfix algorithm
+ * @returns {array} tokenArray where every negative number is in one index e.g. [-4] instead of [-, 4]
+ */
+const fixNegativeNumbers = (tokenArray) => {
+	for(let i = 0; i < tokenArray.length; i++) {
+		if(tokenArray[i] === '-' && !isNaN(tokenArray[i+1])) {
+			tokenArray[i+1] = -1 * tokenArray[i+1];
+			tokenArray.splice(i, 1);
+			// for case where we have x-y, we translate to x+(-y)
+			if(i > 0) {
+				if(!isNaN(tokenArray[i-1])){
+					tokenArray.splice(i, 0, '+')
+				}
+			}
+		}
+	}
+	return tokenArray;
+}
+
+/**
  * @param {string} input 
  * @description takes in input and outputs array of tokens in postfix order
  * algorithm: https://runestone.academy/runestone/books/published/pythonds/BasicDS/InfixPrefixandPostfixExpressions.html
+ * @returns {array} array of elements of input in postfix notation
  */
 const convertToPostfix = (input) => {
 	const precedence = operator => ['(', '+', '-', '*', '/'].indexOf(operator);
@@ -152,4 +190,4 @@ const convertToPostfix = (input) => {
 	return postfixArray;
 }
 
-module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixSingleElementsInParentheses }
+module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixSingleElementsInParentheses, fixNegativeNumbers }
