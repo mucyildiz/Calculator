@@ -6,11 +6,11 @@ describe("evaluateExpression tests", () => {
 			expect(evaluateExpression(testInputStr)).toBe(expectedOutputNum);
 		});
 	}
-	testEvaluateExpression("1 + 2 = 3", "1 + 2", 3);
-	testEvaluateExpression("4*5/2 = 10", "4*5/2", 10);
-	testEvaluateExpression("-5+-8--11*2 = 9", "-5+-8--11*2", 9);
-	testEvaluateExpression("-.32       /.5 = -0.64", "-.32       /.5", -0.64);
-	testEvaluateExpression("(4-2)*3.5 = 7", "(4-2)*3.5", 7);
+	testEvaluateExpression("1 + 2", 3);
+	testEvaluateExpression("4*5/2", 10);
+	testEvaluateExpression("-5+-8--11*2", 9);
+	testEvaluateExpression("-.32       /.5", -0.64);
+	testEvaluateExpression("(4-2)*3.5", 7);
 });
 
 describe("input validation", () => {
@@ -43,17 +43,17 @@ describe("convertToPostfix tests", () => {
 		})
 	}
 	testCorrectPostfixNotation("4+5", ['4', '5', '+']);
-	testCorrectPostfixNotation("3.145 + 4 * 8", ['3.1415', '4', '8', '*', '+'])
+	testCorrectPostfixNotation("3.145 + 4 * 8", ['3.145', '4', '8', '*', '+'])
 	testCorrectPostfixNotation("4(8)", ['4', '8', '*']);
 	testCorrectPostfixNotation("4*5/2", ['4', '5', '*', '2', '/'])
-
+})
 describe("fixing tests", () => {
 	//input should be the string representation of the equation, gets converted to array to be evaluated
 	const testFixSingleElementsInParentheses = (testInputStr, expectedOutputArray) => {
 		const tokenArray = getArrayOfElements(testInputStr);
 		expect(fixSingleElementsInParentheses(tokenArray)).toStrictEqual(expectedOutputArray)
 	}
-})
+
 	testFixSingleElementsInParentheses("4(6)2", ['4','*', '6', '*', '2']);
 	testFixSingleElementsInParentheses("5+4(3)", ['5','+', '4', '*', '3'])
 
