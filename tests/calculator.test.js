@@ -1,4 +1,4 @@
-const { evaluateExpression } = require('../scripts/calculator.js')
+const { evaluateExpression, getArrayOfElements } = require('../scripts/calculator.js')
 
 describe("arithmetic tests", () => {
 	test("1 + 2 = 3", () => {
@@ -29,5 +29,27 @@ describe("input validation", () => {
 
 	test("19 + cinnamon gives Invalid Input", () => {
 		expect(() => {evaluateExpression("19 + cinnamon")}).toThrow("Invalid Input");
+	});
+
+	test("(2+(3) gives Invalid Input", () => {
+		expect(() => {evaluateExpression("(2+(3)")}).toThrow("Invalid Input");
+	});
+});
+
+describe("getArrayOfElements", () => {
+	test("34 +7*8 gives ['34', '+', '7', '*', '8']", () => {
+		expect(getArrayOfElements("34 +7*8")).toStrictEqual(['34', '+', '7', '*', '8']);
+	});
+
+	test("24 + 7 * 80", () => {
+		expect(getArrayOfElements("24 + 7 * 80")).toStrictEqual(['24', '+', '7', '*', '80'])
+	})
+
+	test("3.1415 + 78 +3. gives error", () => {
+		expect(() => {getArrayOfElements("3.1415 + 78 +3.")}).toThrow("Invalid Input");
+	});
+
+	test("(35*7+3.512412)  + 4*72", () => {
+		expect(getArrayOfElements("(35*7+3.512412)  + 4*72")).toStrictEqual(['(', '35', '*', '7', '+', '3.512412', ')', '+', '4', '*', '72']);
 	});
 });
