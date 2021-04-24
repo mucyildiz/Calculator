@@ -7,11 +7,18 @@ const handleClear = () => {
 
 const handleClick = e => {
   const value = e.target.innerHTML;
+  console.log(e);
   if(value === 'Clear'){
     handleClear();
   }
   else if(value === '='){
     evaluateExpressionDOM(equation.value);
+  }
+  else if(value === '←'){
+    equation.value = equation.value.substring(0, equation.value.length-1);
+    if(equation.value.length === 0){
+      equation.placeholder = '';
+    }
   }
   else{
     equation.value += value;
@@ -38,7 +45,7 @@ document.addEventListener("keydown", e => {
     evaluateExpressionDOM(equation.value);
   }
   // shouldn't have "Invalid Input" if we erase input after getting invalid input
-  if(equation.value.length === 1 && e.code === "Backspace"){
+  if(equation.value.length === 1 && (e.code === "Backspace")){
     equation.placeholder = '';
   }
 })
