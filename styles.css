@@ -48,7 +48,7 @@ input {
   padding: 20px;
 }
 
-.clear, .zero {
+.zero {
   grid-column: span 3
 }
 
