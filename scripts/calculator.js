@@ -9,7 +9,12 @@ const evaluateExpression = (input) => {
 		'+': (x, y) => Number(x) + Number(y), 
 		'-': (x, y) => Number(y) - Number(x), 
 		'*': (x, y) => Number(x) * Number(y),
-		'/': (x, y) => Number(y) / Number(x)
+		'/': (x, y) => {
+			if(x === 0) {
+				throw new Error("Can not divide by zero.")
+			}
+			return Number(y) / Number(x);
+		}
 	};
 	const postfixArray = convertToPostfix(input);
 	const postfixStack = [];
@@ -100,8 +105,8 @@ const validateInput = (input) => {
 
 /**
  * @param {array} tokenArray
- * @description looks for expressions in the form of x(y) and converts to x*y
- * @returns {array} array of tokens where all single element parentheses are converted to multiplication problems
+ * @description looks for expressions within parentheses and formats them for use in our algorithm
+ * @returns {array} array of tokens where all parentheses situations are converted to multiplication problems e.g. x(y) -> x*y
  */
 const fixSingleElementsInParentheses = (tokenArray) => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
