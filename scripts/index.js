@@ -11,8 +11,7 @@ const handleClick = e => {
     handleClear();
   }
   else if(value === '='){
-    const result = evaluateExpression(equation.value);
-    equation.value = result;
+    evaluateExpressionDOM(equation.value);
   }
   else{
     equation.value += value;
