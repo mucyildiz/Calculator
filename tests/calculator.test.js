@@ -24,6 +24,13 @@ describe("evaluateExpression tests", () => {
 	testEvaluateExpression("(3-4)2", -2);
 	testEvaluateExpression("3*(4+(6)/2((10)-8))", 30);
 	testEvaluateExpression("2((10)-8)", 4);
+	testEvaluateExpression("5((4*4))", 16*5);
+	testEvaluateExpression("5((4-4))", 0);
+	testEvaluateExpression("5(1/5)", 1);
+	testEvaluateExpression("10/(5-1)", 10/4);
+	testEvaluateExpression("15/(15-(16-72))*-162", 15/(15-(16-72))*-162);
+	testEvaluateExpression("30/15*18-12+(13*13*.12+(11-6/4))", 30/15*18-12+(13*13*.12+(11-6/4)));
+	testEvaluateExpression("30/15-12+(13*13*.12+(11-6/4))", 30/15-12+(13*13*.12+(11-6/4)));
 });
 
 describe("input validation", () => {
@@ -36,6 +43,10 @@ describe("input validation", () => {
 	testValidInput("19 + cinnamon");
 	testValidInput("(2+(3)");
 	testValidInput("3.1415 + 78 +3.");
+
+	test("divide by zero", () => {
+		expect(() => {evaluateExpression("5/(5-5)")}).toThrow("Can not divide by zero.")
+	})
 });
 
 describe("getArrayOfElements tests", () => {
