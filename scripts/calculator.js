@@ -31,6 +31,9 @@ const evaluateExpression = (input) => {
 	}
 	// add Number wrapper because if expression has no operators, will return a string
 	const solution = Number(postfixStack[0]);
+	if(input === "(5*3) - 3") {
+		console.log(postfixStack);
+	}
 	if(postfixStack.length !== 1 || isNaN(solution)){
 		throw new Error("Invalid Input");
 	}
@@ -178,6 +181,7 @@ const fixNegativeNumbers = (tokenArray) => {
 			// if we had x - (y + z), we would go x -1*(y+z) so we need to add a + to get x + -1*(y+z)
 			if(!isNaN(tokenArray[i-1])) {
 				tokenArray.splice(i, 0, '+')
+				i++;
 			}
 		}
 		else if(tokenArray[i] === '-' && !isNaN(tokenArray[i+1])) {
@@ -186,7 +190,7 @@ const fixNegativeNumbers = (tokenArray) => {
 			tokenArray.splice(i, 1);
 			// for case where we have x-y, we translate to x+(-y)
 			if(i > 0) {
-				if(!isNaN(tokenArray[i-1])){
+				if(!isNaN(tokenArray[i-1]) || tokenArray[i-1] === ')'){
 					tokenArray.splice(i, 0, '+')
 				}
 			}
