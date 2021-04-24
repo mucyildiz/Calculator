@@ -33,7 +33,7 @@ const evaluateExpression = (input) => {
 		}
 	}
 	// add Number wrapper because if expression has no operators, will return a string
-	const solution = Number(postfixStack[0]);
+	const solution = Number(postfixStack[0].toFixed(5));
 	if(postfixStack.length !== 1 || !isNumber(solution)){
 		throw new Error("Invalid Input");
 	}
