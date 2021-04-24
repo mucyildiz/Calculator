@@ -3,7 +3,8 @@ const { evaluateExpression, getArrayOfElements, convertToPostfix, fixParentheses
 describe("evaluateExpression tests", () => {
 	const testEvaluateExpression = (testInputStr, expectedOutputNum) => {
 		test(`${testInputStr} = ${expectedOutputNum}`, () => {
-			expect(evaluateExpression(testInputStr)).toBe(expectedOutputNum);
+			const roundedSolution = sol => Number(Math.round(sol * 10000) / 10000);
+			expect(evaluateExpression(testInputStr)).toBe(roundedSolution(expectedOutputNum));
 		});
 	}
 	testEvaluateExpression("1 + 2", 3);
@@ -29,7 +30,7 @@ describe("evaluateExpression tests", () => {
 	testEvaluateExpression("5(1/5)", 1);
 	testEvaluateExpression("10/(5-1)", 10/4);
 	testEvaluateExpression("15/(15-(16-72))*-162", 15/(15-(16-72))*-162);
-	testEvaluateExpression("(30/15*18)-12+(13*13*.12+(11-6/4))", (30/15*18)-12+(13*13*.12+(11-6/4)));
+	testEvaluateExpression("(30/15*18)-12+(13*13*.12+(11-6/4))", ((30/15*18)-12+(13*13*.12+(11-6/4))));
 	testEvaluateExpression("30/15-12+(13*13*.12+(11-6/4))", 30/15-12+(13*13*.12+(11-6/4)));
 	testEvaluateExpression("(5*3) - 3", 12);
 	testEvaluateExpression("3-(5*3)", -12);
