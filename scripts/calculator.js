@@ -33,7 +33,8 @@ const evaluateExpression = (input) => {
 		}
 	}
 	// add Number wrapper because if expression has no operators, will return a string
-	const solution = Number(postfixStack[0].toFixed(5));
+	const roundedSolution = sol => Number(Math.round(sol * 10000) / 10000);
+	const solution = roundedSolution(postfixStack[0]);
 	if(postfixStack.length !== 1 || !isNumber(solution)){
 		throw new Error("Invalid Input");
 	}
