@@ -11,26 +11,28 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100vw;
   height: 95vh;
 }
 
 #calc-container {
-  width: 400px;
-  height: 650px;
+  width: 375px;
+  height: 500px;
   display: flex;
   flex-direction: column;
-  padding: 15px;
-  background-color: gold;
+  padding: 25px;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-#input-container {
-  background-color: var(--purple);
-  height: 250px;
+input {
+  height: 90px;
+  font-size: 30px;
+  padding: 15px;
 }
+
 
 #keys-container {
   padding-top: 15px;
-  height: 250px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
