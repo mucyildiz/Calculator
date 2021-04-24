@@ -246,4 +246,9 @@ const convertToPostfix = (input) => {
 	return postfixArray;
 }
 
-module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixParentheses, fixNegativeNumbers }
+// if we are in browser, can't use node.js module.exports so it throws an error despite us being able to use the code anyway, this works around that
+try{	
+	module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixParentheses, fixNegativeNumbers }
+}
+catch (err) {
+}
