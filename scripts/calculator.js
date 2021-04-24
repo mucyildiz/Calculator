@@ -31,9 +31,6 @@ const evaluateExpression = (input) => {
 	}
 	// add Number wrapper because if expression has no operators, will return a string
 	const solution = Number(postfixStack[0]);
-	if(input === "(5*3) - 3") {
-		console.log(postfixStack);
-	}
 	if(postfixStack.length !== 1 || isNaN(solution)){
 		throw new Error("Invalid Input");
 	}
@@ -111,7 +108,7 @@ const validateInput = (input) => {
  * @description looks for expressions within parentheses and formats them for use in our algorithm
  * @returns {array} array of tokens where all parentheses situations are converted to multiplication problems e.g. x(y) -> x*y
  */
-const fixSingleElementsInParentheses = (tokenArray) => {
+const fixParentheses = (tokenArray) => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
 		if(tokenArray[i-1] === '(' && tokenArray[i+1] === ')') {
 			// case like x((y)) should evaluate to x(y) then to x*y, first we need to remove all unnecessary parentheses
@@ -188,7 +185,7 @@ const fixNegativeNumbers = (tokenArray) => {
 			// we make it a string to keep our types consistent in the tokenArray
 			tokenArray[i+1] = String(-1 * tokenArray[i+1]);
 			tokenArray.splice(i, 1);
-			// for case where we have x-y, we translate to x+(-y)
+			// for case where we have x-y, we translate to x+(-y) or case where expression is (x + y) - z should be evaluated as such
 			if(i > 0) {
 				if(!isNaN(tokenArray[i-1]) || tokenArray[i-1] === ')'){
 					tokenArray.splice(i, 0, '+')
@@ -214,7 +211,7 @@ const convertToPostfix = (input) => {
 		'/': 3
 	};
 
-	const tokenArray = fixNegativeNumbers(fixSingleElementsInParentheses(getArrayOfElements(input)));
+	const tokenArray = fixNegativeNumbers(fixParentheses(getArrayOfElements(input)));
 	const postfixArray = [];
 	const operatorStack = [];
 
@@ -248,4 +245,4 @@ const convertToPostfix = (input) => {
 	return postfixArray;
 }
 
-module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixSingleElementsInParentheses, fixNegativeNumbers }
+module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixParentheses, fixNegativeNumbers }

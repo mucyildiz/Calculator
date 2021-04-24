@@ -1,4 +1,4 @@
-const { evaluateExpression, getArrayOfElements, convertToPostfix, fixSingleElementsInParentheses, fixNegativeNumbers } = require('../scripts/calculator.js')
+const { evaluateExpression, getArrayOfElements, convertToPostfix, fixParentheses, fixNegativeNumbers } = require('../scripts/calculator.js')
 
 describe("evaluateExpression tests", () => {
 	const testEvaluateExpression = (testInputStr, expectedOutputNum) => {
@@ -76,14 +76,14 @@ describe("convertToPostfix tests", () => {
 })
 describe("fixing tests", () => {
 	//input should be the string representation of the equation, gets converted to array to be evaluated
-	const testFixSingleElementsInParentheses = (testInputStr, expectedOutputArray) => {
+	const testFixParentheses = (testInputStr, expectedOutputArray) => {
 		const tokenArray = getArrayOfElements(testInputStr);
-		expect(fixSingleElementsInParentheses(tokenArray)).toStrictEqual(expectedOutputArray);
+		expect(fixParentheses(tokenArray)).toStrictEqual(expectedOutputArray);
 	}
 
-	testFixSingleElementsInParentheses("4(6)2", ['4','*', '6', '*', '2']);
-	testFixSingleElementsInParentheses("5+4(3)", ['5','+', '4', '*', '3'])
-	testFixSingleElementsInParentheses("2((10)-8)", ['2', '*', '(', '10', '-', '8', ')']);
+	testFixParentheses("4(6)2", ['4','*', '6', '*', '2']);
+	testFixParentheses("5+4(3)", ['5','+', '4', '*', '3'])
+	testFixParentheses("2((10)-8)", ['2', '*', '(', '10', '-', '8', ')']);
 
 	const testFixNegativeNumbers = (testInputArray, expectedOutputArray) => {
 		test(`[${testInputArray}] evaluates to [${expectedOutputArray}]`, () => {
