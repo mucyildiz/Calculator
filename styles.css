@@ -1,0 +1,61 @@
+:root {
+  --purple: #2e3ef5;
+}
+
+body {
+  background-image: url('./images/VidmobBackground.png');
+  background-size: 1700px;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95vh;
+}
+
+#calc-container {
+  width: 400px;
+  height: 650px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background-color: gold;
+}
+
+#input-container {
+  background-color: var(--purple);
+  height: 250px;
+}
+
+#keys-container {
+  padding-top: 15px;
+  height: 250px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+.keyPad {
+  height: 30px;
+  width: 30px;
+  background-color: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.clear, .zero {
+  grid-column: span 3
+}
+
+.key {
+  background: var(--purple); /* light background with opacity 50% */
+  border: 1px solid #111; /* black border */
+  padding: 20px;
+  color: #EEE; /* white text */
+  border-radius: 5px; /* rounded corners */
+  font-size: 22px; /* larger fonts */
+  cursor: pointer; /* make it look clickable */
+}
