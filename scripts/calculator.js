@@ -1,3 +1,6 @@
+const isOperator = element => '*/-+()'.includes(element);
+const isNumber = element => !isNaN(element);
+
 /**
  * @param {string} input 
  * @description Takes in a string representing a mathematical equation and evaluates it using postfix arithmetic
@@ -31,13 +34,11 @@ const evaluateExpression = (input) => {
 	}
 	// add Number wrapper because if expression has no operators, will return a string
 	const solution = Number(postfixStack[0]);
-	if(postfixStack.length !== 1 || isNaN(solution)){
+	if(postfixStack.length !== 1 || !isNumber(solution)){
 		throw new Error("Invalid Input");
 	}
 	return solution;
 }
-
-const isOperator = element => '*/-+()'.includes(element);
 
 /**
  * @param {string} input BEFORE it is converted to postfix notation
@@ -120,17 +121,17 @@ const fixParentheses = (tokenArray) => {
 				tokenArray.splice(i+2, 1);
 			}
 			// case of x(y)z -> x*y*z
-			if(!isNaN(tokenArray[i-2]) && !isNaN(tokenArray[i+2])) {
+			if(isNumber(tokenArray[i-2]) && isNumber(tokenArray[i+2])) {
 				tokenArray[i-1] = '*';
 				tokenArray[i+1] = '*';
 			}
 			// x(y)
-			else if(!isNaN(tokenArray[i-2])) {
+			else if(isNumber(tokenArray[i-2])) {
 				tokenArray[i-1] = '*';
 				tokenArray.splice(i+1, 1);
 			}
 			// (x)y
-			else if(!isNaN(tokenArray[i+2])) {
+			else if(isNumber(tokenArray[i+2])) {
 				tokenArray[i+1] = '*';
 				tokenArray.splice(i-1, 1);
 				i--;
@@ -141,18 +142,17 @@ const fixParentheses = (tokenArray) => {
 				tokenArray.splice(i+1, 1);
 			}
 		}
-		// case like (8)(8) should evaluate to (8*8) 
+		// case like (8)(8) should evaluate to (8)*(8) 
 		else if(tokenArray[i] === ')' && tokenArray[i+1] === '('){
-			tokenArray[i] = '*';
-			tokenArray.splice(i+1, 1);
+			tokenArray.splice(i+1, 0, '*');
 		}
 		// case x(y-z) should evaluate to x*(y-z)
-		else if(tokenArray[i] === '(' && !isNaN(tokenArray[i-1])){
+		else if(tokenArray[i] === '(' && isNumber(tokenArray[i-1])){
 			tokenArray.splice(i, 0, '*')
 			i++;
 		}
 		// case (y-z)x should evaluate to (y-z)*x
-		else if(tokenArray[i] === ')' && !isNaN(tokenArray[i+1])){
+		else if(tokenArray[i] === ')' && isNumber(tokenArray[i+1])){
 			tokenArray.splice(i+1, 0, '*');
 		}
 	}
@@ -172,22 +172,22 @@ const fixNegativeNumbers = (tokenArray) => {
 			tokenArray.splice(i+1, 1);
 		}
 		// case like x + -(y + z) -> x + -1*(y+z)
-		else if(tokenArray[i] === '-' && isNaN(tokenArray[i+1])) {
+		else if(tokenArray[i] === '-' && !isNumber(tokenArray[i+1])) {
 			tokenArray[i] = '-1';
 			tokenArray.splice(i+1, 0, '*')
 			// if we had x - (y + z), we would go x -1*(y+z) so we need to add a + to get x + -1*(y+z)
-			if(!isNaN(tokenArray[i-1])) {
+			if(isNumber(tokenArray[i-1])) {
 				tokenArray.splice(i, 0, '+')
 				i++;
 			}
 		}
-		else if(tokenArray[i] === '-' && !isNaN(tokenArray[i+1])) {
+		else if(tokenArray[i] === '-' && isNumber(tokenArray[i+1])) {
 			// we make it a string to keep our types consistent in the tokenArray
 			tokenArray[i+1] = String(-1 * tokenArray[i+1]);
 			tokenArray.splice(i, 1);
-			// for case where we have x-y, we translate to x+(-y) or case where expression is (x + y) - z should be evaluated as such
+			// for case where we have x-y, we translate to x+(-y) or case where expression is (x + y) - z should be evaluated (x+y) + -1*z
 			if(i > 0) {
-				if(!isNaN(tokenArray[i-1]) || tokenArray[i-1] === ')'){
+				if(isNumber(tokenArray[i-1]) || tokenArray[i-1] === ')'){
 					tokenArray.splice(i, 0, '+')
 				}
 			}

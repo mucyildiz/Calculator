@@ -34,6 +34,7 @@ describe("evaluateExpression tests", () => {
 	testEvaluateExpression("(5*3) - 3", 12);
 	testEvaluateExpression("3-(5*3)", -12);
 	testEvaluateExpression("((8-6-14*2(-4/-.27)+(6/2+4))+.6/4)", ((8-6-14*2*(-4/-.27)+(6/2+4))+.6/4) );
+	testEvaluateExpression("(5*6)(5-3)", 60);
 });
 
 describe("input validation", () => {
