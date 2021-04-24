@@ -22,7 +22,7 @@ const handleClick = e => {
 const evaluateExpressionDOM = input => {
   try {
     const result = evaluateExpression(input);
-    return result;
+    equation.value = result;
   }
   catch (err) {
     equation.value = '';
