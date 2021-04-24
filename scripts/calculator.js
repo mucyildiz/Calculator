@@ -108,7 +108,8 @@ const validateInput = (input) => {
 /**
  * @param {array} tokenArray
  * @description looks for expressions within parentheses and formats them for use in our algorithm
- * @returns {array} array of tokens where all parentheses situations are converted to multiplication problems e.g. x(y) -> x*y
+ * @returns {array} array of tokens where all parentheses situations are converted to arithmetic situations that we can work with e.g. x(y) = x*y, 
+ * x - (y-z) = x + -1*(y-z)
  */
 const fixParentheses = (tokenArray) => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
