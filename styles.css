@@ -71,3 +71,27 @@ input {
 .key:active {
   background: rgba(0, 0, 0, 0.7);
 }
+
+/*for mobile*/
+@media only screen and (min-device-width: 375px) and (max-device-height: 812px) and (-webkit-device-pixel-ratio: 3),
+(min-device-width: 375px) and (max-device-height: 667px) and (-webkit-device-pixel-ratio: 2) {
+  .key {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid #111;
+    padding: 35px 10px 35px 10px;
+    color: whitesmoke;
+    border-radius: 5px;
+    font-size: 50px;
+    cursor: pointer;
+  }
+  input {
+    height: 120px;
+  }
+  #vidmob-logo {
+    width: 550px;
+    padding-bottom: 75px;
+  }
+  #keys-container{
+    padding-top: 50px;
+  }
+}
