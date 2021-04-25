@@ -67,45 +67,13 @@ const isNumber = element => !isNaN(element);
 
 /**
  * @param {array} tokenArray
- * @description looks for expressions within parentheses and formats them for use in our algorithm
- * @returns {array} array of tokens where all parentheses situations are converted to arithmetic situations that we can work with e.g. x(y) = x*y, 
- * x - (y-z) = x + -1*(y-z)
+ * @description looks for multiplication involving parentheses and adds * so that our postfix evaluator can understand it is a multiplication problem
+ * @returns {array} token array where all parentheses multiplication problems have * inserted in proper positions e.g. x(y) => x*(y)
  */
- const fixParentheses = tokenArray => {
+ const fixParenthesesMultiplication = tokenArray => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
-		if(tokenArray[i-1] === '(' && tokenArray[i+1] === ')') {
-			// case like x((y)) should evaluate to x(y) then to x*y, first we need to remove all unnecessary parentheses
-			while(tokenArray[i-2] === '(' && tokenArray[i+2] === ')'){
-				// [(, (,  y, ), ),] => [(, y, ), )] => [(, y, )]
-				tokenArray.splice(i-2, 1);
-				//decrement i because the element we are considering had an element before it deleted, changing the indices of everything after
-			  i--;
-				tokenArray.splice(i+2, 1);
-			}
-			// case of x(y)z -> x*y*z
-			if(isNumber(tokenArray[i-2]) && isNumber(tokenArray[i+2])) {
-				tokenArray[i-1] = '*';
-				tokenArray[i+1] = '*';
-			}
-			// x(y)
-			else if(isNumber(tokenArray[i-2])) {
-				tokenArray[i-1] = '*';
-				tokenArray.splice(i+1, 1);
-			}
-			// (x)y
-			else if(isNumber(tokenArray[i+2])) {
-				tokenArray[i+1] = '*';
-				tokenArray.splice(i-1, 1);
-				i--;
-			}
-			else{
-				tokenArray.splice(i-1, 1);
-				i--;
-				tokenArray.splice(i+1, 1);
-			}
-		}
 		// case like (8)(8) should evaluate to (8)*(8) 
-		else if(tokenArray[i] === ')' && tokenArray[i+1] === '('){
+		if(tokenArray[i] === ')' && tokenArray[i+1] === '('){
 			tokenArray.splice(i+1, 0, '*');
 		}
 		// case x(y-z) should evaluate to x*(y-z)
@@ -168,7 +136,7 @@ const isNumber = element => !isNaN(element);
 		'/': 3
 	};
 
-	const tokenArray = fixNegativeNumbers(fixParentheses(getArrayOfTokens(input)));
+	const tokenArray = fixNegativeNumbers(fixParenthesesMultiplication(getArrayOfTokens(input)));
 	const postfixArray = [];
 	const operatorStack = [];
 
@@ -243,7 +211,7 @@ const evaluateExpression = input => {
 
 // if we are in browser, can't use node.js module.exports so it throws an error despite us being able to use the code anyway, this works around that
 try{	
-	module.exports = { evaluateExpression, getArrayOfTokens, convertToPostfix, fixParentheses, fixNegativeNumbers }
+	module.exports = { evaluateExpression, getArrayOfTokens, convertToPostfix, fixParenthesesMultiplication, fixNegativeNumbers }
 }
 catch (err) {
 }
