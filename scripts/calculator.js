@@ -6,7 +6,7 @@ const isNumber = element => !isNaN(element);
  * @description Ensures that the input is clean, meaning there exist no irrelevant elements in the input. 
  * Note that another form of invalid input is one where we have more operators than we can use - this is checked for in evaluateExpression
  */
- const validateInput = (input) => {
+ const validateInput = input => {
 	//check parentheses line up
 	let parenthesesTracker = 0;
 	for(chr of input){
@@ -71,7 +71,7 @@ const isNumber = element => !isNaN(element);
  * @returns {array} array of tokens where all parentheses situations are converted to arithmetic situations that we can work with e.g. x(y) = x*y, 
  * x - (y-z) = x + -1*(y-z)
  */
- const fixParentheses = (tokenArray) => {
+ const fixParentheses = tokenArray => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
 		if(tokenArray[i-1] === '(' && tokenArray[i+1] === ')') {
 			// case like x((y)) should evaluate to x(y) then to x*y, first we need to remove all unnecessary parentheses
@@ -126,7 +126,7 @@ const isNumber = element => !isNaN(element);
  * @definition takes in array (in infix notation) and makes interactions with negative numbers easier to deal with for postfix algorithm
  * @returns {array} tokenArray where every negative number is in one index e.g. [-4] instead of [-, 4]
  */
- const fixNegativeNumbers = (tokenArray) => {
+ const fixNegativeNumbers = tokenArray => {
 	for(let i = 0; i < tokenArray.length; i++) {
 		// if we have two negatives next to each other we simply treat it as addition and get rid of one of the negatives
 		if(tokenArray[i] === '-' && tokenArray[i+1] === '-'){
@@ -211,7 +211,7 @@ const isNumber = element => !isNaN(element);
  * @description Takes in a string representing a mathematical equation and evaluates it using postfix arithmetic
  * @returns {number} 
  */
-const evaluateExpression = (input) => {
+const evaluateExpression = input => {
 	validateInput(input);
 	const operate = {
 		'+': (x, y) => Number(x) + Number(y), 
