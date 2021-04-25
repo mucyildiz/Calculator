@@ -28,7 +28,13 @@ const handleClick = e => {
 const evaluateExpressionDOM = input => {
   try {
     const result = evaluateExpression(input);
-    equation.value = result;
+    if(result === Infinity) {
+      equation.value = '';
+      equation.placeholder = 'Can not divide by zero.';
+    }
+    else{
+      equation.value = result;
+    }
   }
   catch (err) {
     equation.value = '';
