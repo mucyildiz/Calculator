@@ -98,7 +98,7 @@ const isNumber = element => !isNaN(element);
  const fixNegativeNumbers = tokenArray => {
 	for(let i = 0; i < tokenArray.length; i++) {
 		// case like x + -(y + z) -> x + -1*(y+z)
-		if(tokenArray[i] === '-' && !isNumber(tokenArray[i+1])) {
+		if(tokenArray[i] === '-' && tokenArray[i+1] === '(') {
 			tokenArray[i] = '-1';
 			tokenArray.splice(i+1, 0, '*')
 			// if we had x - (y + z), we would go x -1*(y+z) so we need to add a + to get x + -1*(y+z)
@@ -111,7 +111,7 @@ const isNumber = element => !isNaN(element);
 			// we make it a string to keep our types consistent in the tokenArray
 			tokenArray[i+1] = String(-1 * tokenArray[i+1]);
 			tokenArray.splice(i, 1);
-			// for case where we have x-y, we translate to x+(-y) or case where expression is (x + y) - z should be evaluated (x+y) + -1*z
+			// for case where we have x-y, we translate to x + -1*y or case where expression is (x + y) - z should be evaluated (x+y) + -1*z
 			if(isNumber(tokenArray[i-1]) || tokenArray[i-1] === ')'){
 				tokenArray.splice(i, 0, '+')
 			}
@@ -203,9 +203,11 @@ const evaluateExpression = input => {
 	// add Number wrapper because if expression has no operators, will return a string
 	const roundedSolution = solution => Number(Math.round(solution * 10000) / 10000);
 	const solution = roundedSolution(postfixStack[0]);
+
 	if(postfixStack.length !== 1 || !isNumber(solution)){
 		throw new Error("Invalid Input");
 	}
+	
 	return solution;
 }
 
