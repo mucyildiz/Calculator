@@ -128,13 +128,8 @@ const isNumber = element => !isNaN(element);
  */
  const fixNegativeNumbers = tokenArray => {
 	for(let i = 0; i < tokenArray.length; i++) {
-		// if we have two negatives next to each other we simply treat it as addition and get rid of one of the negatives
-		if(tokenArray[i] === '-' && tokenArray[i+1] === '-'){
-			tokenArray[i] = '+';
-			tokenArray.splice(i+1, 1);
-		}
 		// case like x + -(y + z) -> x + -1*(y+z)
-		else if(tokenArray[i] === '-' && !isNumber(tokenArray[i+1])) {
+		if(tokenArray[i] === '-' && !isNumber(tokenArray[i+1])) {
 			tokenArray[i] = '-1';
 			tokenArray.splice(i+1, 0, '*')
 			// if we had x - (y + z), we would go x -1*(y+z) so we need to add a + to get x + -1*(y+z)
