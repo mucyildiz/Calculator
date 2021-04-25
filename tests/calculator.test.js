@@ -1,4 +1,4 @@
-const { evaluateExpression, getArrayOfElements, convertToPostfix, fixParentheses, fixNegativeNumbers } = require('../scripts/calculator.js')
+const { evaluateExpression, getArrayOfTokens, convertToPostfix, fixParentheses, fixNegativeNumbers } = require('../scripts/calculator.js')
 
 describe("evaluateExpression tests", () => {
 	const testEvaluateExpression = (testInputStr, expectedOutputNum) => {
@@ -54,10 +54,10 @@ describe("input validation", () => {
 	})
 });
 
-describe("getArrayOfElements tests", () => {
+describe("getArrayOfTokens tests", () => {
 	const testCorrectArrayReturned = (testInputStr, expectedOutputArray) => {
 		test(`${testInputStr} gives [${expectedOutputArray}]`, () => {
-			expect(getArrayOfElements(testInputStr)).toStrictEqual(expectedOutputArray);
+			expect(getArrayOfTokens(testInputStr)).toStrictEqual(expectedOutputArray);
 		})
 	}
 	testCorrectArrayReturned("34 +7*8", ['34', '+', '7', '*', '8']);
@@ -79,7 +79,7 @@ describe("convertToPostfix tests", () => {
 describe("fixing tests", () => {
 	//input should be the string representation of the equation, gets converted to array to be evaluated
 	const testFixParentheses = (testInputStr, expectedOutputArray) => {
-		const tokenArray = getArrayOfElements(testInputStr);
+		const tokenArray = getArrayOfTokens(testInputStr);
 		expect(fixParentheses(tokenArray)).toStrictEqual(expectedOutputArray);
 	}
 
