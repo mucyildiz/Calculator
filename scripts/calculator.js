@@ -50,6 +50,7 @@ const isNumber = element => !isNaN(element);
 		}
 		else{
 			while(i < inputArray.length - 1 && !isOperator(inputArray[i+1])) {
+				// we find a decimal point but we already have one in the token we are considering
 				if(currToken.includes('.') && inputArray[i+1] === '.'){
 					throw new Error("Invalid Input");
 				}
@@ -111,10 +112,8 @@ const isNumber = element => !isNaN(element);
 			tokenArray[i+1] = String(-1 * tokenArray[i+1]);
 			tokenArray.splice(i, 1);
 			// for case where we have x-y, we translate to x+(-y) or case where expression is (x + y) - z should be evaluated (x+y) + -1*z
-			if(i > 0) {
-				if(isNumber(tokenArray[i-1]) || tokenArray[i-1] === ')'){
-					tokenArray.splice(i, 0, '+')
-				}
+			if(isNumber(tokenArray[i-1]) || tokenArray[i-1] === ')'){
+				tokenArray.splice(i, 0, '+')
 			}
 		}
 	}
@@ -136,6 +135,7 @@ const isNumber = element => !isNaN(element);
 		'/': 3
 	};
 
+	const peek = stack => stack[stack.length - 1];
 	const tokenArray = fixNegativeNumbers(fixParenthesesMultiplication(getArrayOfTokens(input)));
 	const postfixArray = [];
 	const operatorStack = [];
@@ -157,7 +157,7 @@ const isNumber = element => !isNaN(element);
 		}
 		else{
 			//higher precedence operators get evaluated first so before we push an operator onto postfix, we check for higher precedence operators already in stack and push them first
-			while(operatorStack.length !== 0 && precedence[operatorStack[operatorStack.length - 1]] >= precedence[token]) {
+			while(operatorStack.length !== 0 && precedence[peek(operatorStack)] >= precedence[token]) {
 				postfixArray.push(operatorStack.pop());
 			}
 			operatorStack.push(token);
@@ -201,7 +201,7 @@ const evaluateExpression = input => {
 		}
 	}
 	// add Number wrapper because if expression has no operators, will return a string
-	const roundedSolution = sol => Number(Math.round(sol * 10000) / 10000);
+	const roundedSolution = solution => Number(Math.round(solution * 10000) / 10000);
 	const solution = roundedSolution(postfixStack[0]);
 	if(postfixStack.length !== 1 || !isNumber(solution)){
 		throw new Error("Invalid Input");
