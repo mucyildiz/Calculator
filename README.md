@@ -27,9 +27,9 @@ validateInput takes in a string input and checks it for anything that could pote
 `getArrayOfTokens(input)`<br />
 getArrayOfTokens takes in a string input and returns an array with each token having it's own index e.g. '3.56+4' becomes ['3.56', '+', '4'].
 <br /> <br />
-**fixParentheses**<br />
-`fixParentheses(tokenArray)`<br />
-fixParentheses takes in an array of tokens and fixes all edge cases for parentheses and returned the array with all the edge cases accounted for. For example, our postfix evaluation algorithm does not know what to do when we have a situation like x(y), which should mean x times y. So we simply convert it as such. This method returns an array with every problematic parentheses situation converted into a friendlier version of the same situation.
+**fixParenthesesMultiplication**<br />
+`fixParenthesesMultiplication(tokenArray)`<br />
+fixParentheses takes in an array of tokens and fixes the problem of parentheses multiplication. For example if we had x(y), we would convert it to x\*(y). This makes it easier for our postfix evaluation algorithm to understand the problem is one concerning multiplication. This method returns an array where all parentheses multiplication problems have '\*' inserted in the correct positions.
 <br /> <br />
 **fixNegativeNumbers** <br />
 `fixNegativeNumbers(tokenArray)` <br />
