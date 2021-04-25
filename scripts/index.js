@@ -28,6 +28,7 @@ const handleClick = e => {
 const evaluateExpressionDOM = input => {
   try {
     const result = evaluateExpression(input);
+    // calc throws error on y/(x-x) but not y/0 so this is a check for that
     if(result === Infinity) {
       equation.value = '';
       equation.placeholder = 'Can not divide by zero.';
@@ -37,8 +38,14 @@ const evaluateExpressionDOM = input => {
     }
   }
   catch (err) {
+    console.log(err.toString() === "Error: Can not divide by zero.");
     equation.value = '';
-    equation.placeholder = 'Invalid Input';
+    if(err.toString() === "Error: Can not divide by zero."){
+      equation.placeholder = 'Can not divide by zero.';
+    }
+    else{
+      equation.placeholder = 'Invalid Input';
+    }
   }
 } 
 
