@@ -209,9 +209,8 @@ const evaluateExpression = input => {
 	return solution;
 }
 
-// if we are in browser, can't use node.js module.exports so it throws an error despite us being able to use the code anyway, this works around that
+// if we are in browser, can't use node.js module.exports so it throws an error which doesn't matter to us since this code is only imported in testing, this works around that
 try{	
 	module.exports = { evaluateExpression, getArrayOfTokens, convertToPostfix, fixParenthesesMultiplication, fixNegativeNumbers }
 }
-catch (err) {
-}
+catch (err){};
