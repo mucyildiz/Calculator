@@ -92,6 +92,5 @@ describe("fixing tests", () => {
 			expect(fixNegativeNumbers(testInputArray)).toStrictEqual(expectedOutputArray);
 		})
 	}
-	testFixNegativeNumbers(['5', '-', '-', '4'], ['5', '+', '4']);
 	testFixNegativeNumbers(['5', '-', '4'], ['5', '+', '-4']);
 })
