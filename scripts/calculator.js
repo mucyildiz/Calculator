@@ -2,83 +2,11 @@ const isOperator = element => '*/-+()'.includes(element);
 const isNumber = element => !isNaN(element);
 
 /**
- * @param {string} input 
- * @description Takes in a string representing a mathematical equation and evaluates it using postfix arithmetic
- * @returns {number} 
- */
-const evaluateExpression = (input) => {
-	validateInput(input);
-	const operate = {
-		'+': (x, y) => Number(x) + Number(y), 
-		'-': (x, y) => Number(y) - Number(x), 
-		'*': (x, y) => Number(x) * Number(y),
-		'/': (x, y) => {
-			if(x === 0) {
-				throw new Error("Can not divide by zero.")
-			}
-			return Number(y) / Number(x);
-		}
-	};
-	const postfixArray = convertToPostfix(input);
-	const postfixStack = [];
-	for(let token of postfixArray){
-		if(isOperator(token)){
-			const operation = operate[token];
-			const elementOne = postfixStack.pop();
-			const elementTwo = postfixStack.pop();
-			postfixStack.push(operation(elementOne, elementTwo));
-		}
-		else{
-			postfixStack.push(token);
-		}
-	}
-	// add Number wrapper because if expression has no operators, will return a string
-	const roundedSolution = sol => Number(Math.round(sol * 10000) / 10000);
-	const solution = roundedSolution(postfixStack[0]);
-	if(postfixStack.length !== 1 || !isNumber(solution)){
-		throw new Error("Invalid Input");
-	}
-	return solution;
-}
-
-/**
- * @param {string} input BEFORE it is converted to postfix notation
- * @description takes string expression and outputs array with each token having its own index in the array
- * allows us to have decimal values and greater than single digit values
- * @returns {Array} 
- */
-const getArrayOfElements = (input) => {
-	const inputWithoutSpaces = input.replace(/\s+/g, '');
-	const inputArray = inputWithoutSpaces.split('');
-	const tokenArray = [];
-	for(let i = 0; i < inputArray.length; i++) {
-		let currToken = inputArray[i];
-		if(isOperator(currToken)) {
-			tokenArray.push(currToken)
-		}
-		else{
-			while(i < inputArray.length - 1 && !isOperator(inputArray[i+1])) {
-				if(currToken.includes('.') && inputArray[i+1] === '.'){
-					throw new Error("Invalid Input");
-				}
-				currToken += inputArray[i+1];
-				i++;
-			}
-			if(currToken.charAt(currToken.length-1) === '.'){
-				throw new Error("Invalid Input");
-			}
-			tokenArray.push(currToken);
-		}
-	}
-	return tokenArray;
-}
-
-/**
  * @param {string} input
  * @description Ensures that the input is clean, meaning there exist no irrelevant elements in the input. 
  * Note that another form of invalid input is one where we have more operators than we can use - this is checked for in evaluateExpression
  */
-const validateInput = (input) => {
+ const validateInput = (input) => {
 	//check parentheses line up
 	let parenthesesTracker = 0;
 	for(chr of input){
@@ -106,12 +34,44 @@ const validateInput = (input) => {
 }
 
 /**
+ * @param {string} input BEFORE it is converted to postfix notation
+ * @description takes string expression and outputs array with each token having its own index in the array
+ * allows us to have decimal values and greater than single digit values
+ * @returns {Array} 
+ */
+ const getArrayOfTokens = input => {
+	const inputWithoutSpaces = input.replace(/\s+/g, '');
+	const inputArray = inputWithoutSpaces.split('');
+	const tokenArray = [];
+	for(let i = 0; i < inputArray.length; i++) {
+		let currToken = inputArray[i];
+		if(isOperator(currToken)) {
+			tokenArray.push(currToken)
+		}
+		else{
+			while(i < inputArray.length - 1 && !isOperator(inputArray[i+1])) {
+				if(currToken.includes('.') && inputArray[i+1] === '.'){
+					throw new Error("Invalid Input");
+				}
+				currToken += inputArray[i+1];
+				i++;
+			}
+			if(currToken.charAt(currToken.length-1) === '.'){
+				throw new Error("Invalid Input");
+			}
+			tokenArray.push(currToken);
+		}
+	}
+	return tokenArray;
+}
+
+/**
  * @param {array} tokenArray
  * @description looks for expressions within parentheses and formats them for use in our algorithm
  * @returns {array} array of tokens where all parentheses situations are converted to arithmetic situations that we can work with e.g. x(y) = x*y, 
  * x - (y-z) = x + -1*(y-z)
  */
-const fixParentheses = (tokenArray) => {
+ const fixParentheses = (tokenArray) => {
 	for(let i = 1; i < tokenArray.length - 1; i++) {
 		if(tokenArray[i-1] === '(' && tokenArray[i+1] === ')') {
 			// case like x((y)) should evaluate to x(y) then to x*y, first we need to remove all unnecessary parentheses
@@ -166,7 +126,7 @@ const fixParentheses = (tokenArray) => {
  * @definition takes in array (in infix notation) and makes interactions with negative numbers easier to deal with for postfix algorithm
  * @returns {array} tokenArray where every negative number is in one index e.g. [-4] instead of [-, 4]
  */
-const fixNegativeNumbers = (tokenArray) => {
+ const fixNegativeNumbers = (tokenArray) => {
 	for(let i = 0; i < tokenArray.length; i++) {
 		// if we have two negatives next to each other we simply treat it as addition and get rid of one of the negatives
 		if(tokenArray[i] === '-' && tokenArray[i+1] === '-'){
@@ -204,7 +164,7 @@ const fixNegativeNumbers = (tokenArray) => {
  * algorithm: https://runestone.academy/runestone/books/published/pythonds/BasicDS/InfixPrefixandPostfixExpressions.html
  * @returns {array} array of elements of input in postfix notation
  */
-const convertToPostfix = (input) => {
+ const convertToPostfix = input => {
 	const precedence = {
 		'(': 1,
 		'+': 2,
@@ -213,7 +173,7 @@ const convertToPostfix = (input) => {
 		'/': 3
 	};
 
-	const tokenArray = fixNegativeNumbers(fixParentheses(getArrayOfElements(input)));
+	const tokenArray = fixNegativeNumbers(fixParentheses(getArrayOfTokens(input)));
 	const postfixArray = [];
 	const operatorStack = [];
 
@@ -243,13 +203,52 @@ const convertToPostfix = (input) => {
 	while(operatorStack.length !== 0){
 		postfixArray.push(operatorStack.pop());
 	}
-
 	return postfixArray;
+}
+
+/**
+ * @param {string} input 
+ * @description Takes in a string representing a mathematical equation and evaluates it using postfix arithmetic
+ * @returns {number} 
+ */
+const evaluateExpression = (input) => {
+	validateInput(input);
+	const operate = {
+		'+': (x, y) => Number(x) + Number(y), 
+		'-': (x, y) => Number(y) - Number(x), 
+		'*': (x, y) => Number(x) * Number(y),
+		'/': (x, y) => {
+			if(x === 0) {
+				throw new Error("Can not divide by zero.")
+			}
+			return Number(y) / Number(x);
+		}
+	};
+	const postfixArray = convertToPostfix(input);
+	const postfixStack = [];
+	for(let token of postfixArray){
+		if(isOperator(token)){
+			const operation = operate[token];
+			const elementOne = postfixStack.pop();
+			const elementTwo = postfixStack.pop();
+			postfixStack.push(operation(elementOne, elementTwo));
+		}
+		else{
+			postfixStack.push(token);
+		}
+	}
+	// add Number wrapper because if expression has no operators, will return a string
+	const roundedSolution = sol => Number(Math.round(sol * 10000) / 10000);
+	const solution = roundedSolution(postfixStack[0]);
+	if(postfixStack.length !== 1 || !isNumber(solution)){
+		throw new Error("Invalid Input");
+	}
+	return solution;
 }
 
 // if we are in browser, can't use node.js module.exports so it throws an error despite us being able to use the code anyway, this works around that
 try{	
-	module.exports = { evaluateExpression, getArrayOfElements, convertToPostfix, fixParentheses, fixNegativeNumbers }
+	module.exports = { evaluateExpression, getArrayOfTokens, convertToPostfix, fixParentheses, fixNegativeNumbers }
 }
 catch (err) {
 }
