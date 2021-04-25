@@ -1,5 +1,6 @@
 :root {
   --purple: #2e3ef5;
+  --orange: #f58e2e;
 }
 
 body {
@@ -7,57 +8,66 @@ body {
   background-size: 1700px;
 }
 
+/*source for some of the calculator styling: https://scotch.io/bar-talk/build-a-css-grid-calculator-solution-to-code-challenge-2*/
+
+#vidmob-logo {
+  width: 340px;
+  padding-bottom: 25px;
+}
+
 #container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 99vw;
   height: 95vh;
 }
 
 #calc-container {
-  width: 375px;
-  height: 500px;
   display: flex;
   flex-direction: column;
   padding: 25px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--purple);
+  border: thin solid black;
+  border-radius: 15px;
+  box-shadow: 5px 10px rgba(0, 0, 0, 0.4);
 }
 
 input {
-  height: 90px;
-  font-size: 30px;
+  height: 60px;
+  font-size: 25px;
   padding: 15px;
+  background: whitesmoke;
+  border: thin solid black;
 }
 
-
 #keys-container {
-  padding-top: 15px;
+  padding-top: 25px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 }
 
-.keyPad {
-  height: 30px;
-  width: 30px;
-  background-color: grey;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
 
 .zero {
-  grid-column: span 2
+  grid-column: span 2;
 }
 
 .key {
-  background: var(--purple); /* light background with opacity 50% */
-  border: 1px solid #111; /* black border */
-  padding: 20px;
-  color: #EEE; /* white text */
-  border-radius: 5px; /* rounded corners */
-  font-size: 22px; /* larger fonts */
-  cursor: pointer; /* make it look clickable */
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #111;
+  padding: 15px 5px 15px 5px;
+  color: whitesmoke;
+  border-radius: 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.key:hover {
+  background: rgba(0, 0, 0, 0.6)
+}
+
+.key:active {
+  background: rgba(0, 0, 0, 0.7);
 }
