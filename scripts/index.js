@@ -7,7 +7,6 @@ const handleClear = () => {
 
 const handleClick = e => {
   const value = e.target.innerHTML;
-  console.log(e);
   if(value === 'Clear'){
     handleClear();
   }
@@ -55,7 +54,9 @@ for(button of buttons) {
 
 document.addEventListener("keydown", e => {
   if (e.code === "Enter"){
-    evaluateExpressionDOM(equation.value);
+    if(equation.value){
+      evaluateExpressionDOM(equation.value);
+    }
   }
   // shouldn't have "Invalid Input" if we erase input after getting invalid input
   if(equation.value.length === 1 && (e.code === "Backspace")){
