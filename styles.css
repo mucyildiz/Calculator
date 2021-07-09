@@ -2,17 +2,7 @@
   --purple: #2e3ef5;
 }
 
-body {
-  background-image: url('./images/VidmobBackground.png');
-  background-size: 1700px;
-}
-
 /*source for some of the calculator styling: https://scotch.io/bar-talk/build-a-css-grid-calculator-solution-to-code-challenge-2*/
-
-#vidmob-logo {
-  width: 340px;
-  padding-bottom: 25px;
-}
 
 #container {
   display: flex;
@@ -86,10 +76,6 @@ input {
   input {
     height: 120px;
     font-size: 50px;
-  }
-  #vidmob-logo {
-    width: 550px;
-    padding-bottom: 75px;
   }
   #keys-container{
     padding-top: 50px;
