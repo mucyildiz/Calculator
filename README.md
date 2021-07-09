@@ -1,9 +1,9 @@
-# Vidmob Calculator
+# Calculator
 This is a web application that contains a calculator which supports addition, subtraction, multiplication, and division. 
 
 <br />
 ## Using the app
-To use the application, simply head over to https://mucyildiz.github.io/Vidmob-Calculator/ and either select and write into the input portion of the calculator, or press the buttons with a mouse. 
+To use the application, simply head over to https://mucyildiz.github.io/Calculator/ and either select and write into the input portion of the calculator, or press the buttons with a mouse. 
 
 ## Valid Inputs
 In addition to the operations mentioned above, the calculator is also able to handle parentheses in any context. Some example valid inputs are<br />
